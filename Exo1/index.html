@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <title>Exo1 SDF</title>
+        <script src="./js/vue.js"></script>
+       
+    </head>
+    <body>
+        
+            <div id="app">
+                <h1> <button @click='addItem'> Add </button></h1>
+                <li is="ligne"
+                v-for="todo in items"
+                v-bind:key="todo.id"
+                v-bind:title="todo.i">
+            </li>
+                
+            </div>
+
+        <script>
+            
+            Vue.component('ligne',
+                {template:`<div v-if='!this.editing'> 
+                    <span class='text'>{{this.value}}</span>
+                    <button  @click='enableEditing'> Edit </button>
+                    <button @click='disableEditing'> Cancel </button>
+                    
+                    </div>
+                    <div v-else-if='this.editing'>                    
+                    <input v-model='tempValue' class='input'/>                   
+                    
+                    <button @click='saveEdit'> Save </button>
+                    <button @click='disableEditing'> Cancel </button>
+                    </div>`,
+                data: function(){
+                    return{
+                        value: 'Gib etwas ein!',
+                        tempValue: null,
+                        editing: false,
+                        
+                    }
+                },
+                methods: {
+                enableEditing: function(){
+                this.tempValue = this.value;
+                this.editing = true;
+                },
+                disableEditing: function(){
+                this.tempValue = null;
+                this.editing = false;
+                },
+                saveEdit: function(){
+                // However we want to save it to the database
+                this.value = this.tempValue;
+                this.disableEditing();
+                }
+                
+            }
+            
+            })
+            new Vue({
+                el: '#app',
+                prop: ['type'],
+                data:{
+                    items: [
+                        {id: 1,
+                        i: '' },
+                        {id: 2,
+                        i: '' },
+                        {id: 3,
+                        i: '' }
+                        ],
+                    nextTodoId: 4
+                },
+                methods:{
+                    addItem: function () {
+                    this.items.push({
+                        id: this.nextTodoId++,
+                        i: ''
+                    })
+                    
+                    }
+                }
+            })  
+        </script>
+
+
+    
+    </body>
+</html>
